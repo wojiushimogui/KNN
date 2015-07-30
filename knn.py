@@ -26,6 +26,7 @@ def kNNClassify(newInput, dataSet, labels, k):
     ## step 1: calculate Euclidean distance  
     # tile(A, reps): Construct an array by repeating A reps times  
     # the following copy numSamples rows for dataSet  
+	#diff为测试样本与每个已知类别样本在每个维度的差值,squaredDist为测试样本与每个已知类别样本的距离的平方
 	diff = tile(newInput, (numSamples, 1)) - dataSet # Subtract element-wise  
 	squaredDiff = diff ** 2 # squared for the subtract  
 	squaredDist = sum(squaredDiff, axis = 1) # sum is performed by row  
@@ -36,13 +37,13 @@ def kNNClassify(newInput, dataSet, labels, k):
 	sortedDistIndices = argsort(distance)  
   
 	classCount = {} # define a dictionary (can be append element)  
-	for i in range(k):  
+	for i in range(k)://选择最小的k个距离  
         ## step 3: choose the min k distance  
 		voteLabel = labels[sortedDistIndices[i]]  
   
         ## step 4: count the times labels occur  
         # when the key voteLabel is not in dictionary classCount, get()  
-        # will return 0  
+        # will return 0  键值对，如果键不存在，返回0  
 		classCount[voteLabel] = classCount.get(voteLabel, 0) + 1  
   
     ## step 5: the max voted class will return  
